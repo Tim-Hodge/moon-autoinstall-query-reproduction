@@ -1,0 +1,73 @@
+name: Repro - AND vs && in MQL query
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  control-simple:
+    name: "control: simple (should pass)"
+    runs-on: ubuntu-latest
+    env:
+      MOON_LOG: trace
+    steps:
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-toolchain@v0
+      - run: moon run --query 'tag=env-Staging' :hello
+
+  control-ampersand:
+    name: "control: && (should pass)"
+    runs-on: ubuntu-latest
+    env:
+      MOON_LOG: trace
+    steps:
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-toolchain@v0
+      - run: moon run --query 'tag=pulumi && tag=env-Staging' :hello
+
+  control-and:
+    name: "control: AND (should pass)"
+    runs-on: ubuntu-latest
+    env:
+      MOON_LOG: trace
+    steps:
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-toolchain@v0
+      - run: moon run --query 'tag=pulumi AND tag=env-Staging' :hello
+
+  simple-autoinstall:
+    name: "simple + autoinstall"
+    runs-on: ubuntu-latest
+    env:
+      MOON_LOG: trace
+    steps:
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-toolchain@v0
+        with:
+          auto-install: true
+      - run: moon run --query 'tag=env-Staging' :hello
+
+  ampersand-autoinstall:
+    name: "&& + autoinstall"
+    runs-on: ubuntu-latest
+    env:
+      MOON_LOG: trace
+    steps:
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-toolchain@v0
+        with:
+          auto-install: true
+      - run: moon run --query 'tag=pulumi && tag=env-Staging' :hello
+
+  and-autoinstall:
+    name: "and + autoinstall"
+    runs-on: ubuntu-latest
+    env:
+      MOON_LOG: trace
+    steps:
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-toolchain@v0
+        with:
+          auto-install: true
+      - run: moon run --query 'tag=pulumi AND tag=env-Staging' :hello

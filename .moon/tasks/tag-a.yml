@@ -1,0 +1,11 @@
+# Mirrors pulumi.yml - inherited by tag
+inheritedBy:
+  tags: ["pulumi"]
+
+tasks:
+  hello:
+    command: echo
+    args:
+      - "hello"
+    options:
+      cache: false
